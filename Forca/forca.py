@@ -1,23 +1,23 @@
 ###################################################
 #-------------------------------------------------#
 #----------------Jogo de forca--------------------#
-#-----------Autor: Mayk Caldas -------------------#
-#------------Feito em 20/02/2019------------------#
-#--------Em uma noite antes do sono bater---------#
+#-----------Author: Mayk Caldas ------------------#
+#-------------Done in 20/02/2019------------------#
+#--------In a night before become asleepy --------#
 #-------------------------------------------------#
 ###################################################
 
 
 
 #####################################
-### ESCOLHA A PALAVRA PARA JOGAR ####
+####### CHOOSE A WORD TO PLAY #######
 #####################################
 
 palavra="bicicleta"
 
-#####################################
-## NÃO ALTERE MAIS NADA NO CÓDIGO ###
-#####################################
+#############################################
+## DO NOT CHANGE ANYTHING ELSE IN THE CODE ##
+#############################################
 
 
 import os
@@ -30,11 +30,11 @@ forca="-"*len(palavra)
 print(forca)
 
 while (erros < 6):
-    chute=input("Tente uma letra: ")
+    chute=input("Take a guess: ")
     
     while (chute.isalpha() != True):
-        print("O input deve ser uma letra")
-        chute=input("Tente uma letra: ")
+        print("The input should be just a character")
+        chute=input("Take a guess: ")
 
     if chute in palavra:
         for k in range(palavra.count(chute)):
@@ -45,14 +45,14 @@ while (erros < 6):
         print("")
 
         if palavra=="-"*len(palavra):
-            print("Ganhoooou!")
+            print("Yeeeeay! You won!")
             break
     
     elif chute in letrasErradas or chute in forca:
-        print("Você já tentou essa letra.")
-        print("Já errou essas aqui:")
+        print("You have already tried this one.")
+        print("You had already wrong those ones:")
         print(letrasErradas)
-        print("\n Tente de novo")
+        print("\n Try again")
         print(forca)
         
     else:
@@ -60,13 +60,15 @@ while (erros < 6):
         letrasErradas.append(chute)
         
         if erros == 6:
-            print("Mórreu")
+            print("Just died")
             break
         
-        print("{0} erros! E já errou essas aqui:".format(erros))
+        print("{0} mistakes! And you already wrong those ones:".format(erros))
         print(letrasErradas)
         print("")
-        print("Tenta de novo: ")
+        print("Try again: ")
         print(forca)
         print("")
-os.system("Pause")
+
+#That is needed to pause when running in a windows environment
+#os.system("Pause")
