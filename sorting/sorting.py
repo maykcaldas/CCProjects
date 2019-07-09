@@ -3,11 +3,28 @@
 import os
 #import numpy as np
 
+
+def insertionSort(listToSort):
+    ''' '''
+    for i in range(len(listToSort)):
+        currentPos = i
+        for i in range(currentPos, 0, -1):
+            
+
+
+
+def selectionSort(listToSort):
+    '''The selection sort algorithm search the list len(list) times. At each search, it changes the position of the smaller element of the list with the current position of the search. It has a O(n^2) complexity. '''
+    for i in range(len(listToSort)):
+        minPos = i
+        for j in range(i, len(listToSort)):
+            if listToSort[j] < listToSort[minPos]:
+                minPos = j
+        listToSort[minPos], listToSort[i] = listToSort[i], listToSort[minPos]
+
+    return listToSort
+    
 def mergeSort():
-    pass
-
-
-def insertionSort():
     pass
 
 
@@ -46,6 +63,12 @@ def sorting(listToSort):
 
 
 def main():
+
+    sort = [5,67,1,1,2,4,6,8,9,67,5,544,3,3,6,4,4,6]
+
+    print(selectionSort(sort))
+
+
     #inp = input("Insira uma tupla de números: ")
     #
     #stringInput=inp.split()
