@@ -33,10 +33,12 @@ while (erros < 6):
     chute=input("Take a guess: ")
     
     while (chute.isalpha() != True):
+        os.system("clear")
         print("The input should be just a character")
         chute=input("Take a guess: ")
 
     if chute in palavra:
+        os.system("clear")
         for k in range(palavra.count(chute)):
             posicao=palavra.find(chute)
             forca = forca[0:posicao]+chute+forca[posicao+1:]
@@ -45,10 +47,12 @@ while (erros < 6):
         print("")
 
         if palavra=="-"*len(palavra):
+            os.system("clear")
             print("Yeeeeay! You won!")
             break
     
     elif chute in letrasErradas or chute in forca:
+        os.system("clear")
         print("You have already tried this one.")
         print("You had already wrong those ones:")
         print(letrasErradas)
@@ -63,6 +67,7 @@ while (erros < 6):
             print("Just died")
             break
         
+        os.system("clear")
         print("{0} mistakes! And you already wrong those ones:".format(erros))
         print(letrasErradas)
         print("")
