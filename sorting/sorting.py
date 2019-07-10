@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
  
 import os
+import time
+import random
 #import numpy as np
 
 
@@ -17,9 +19,10 @@ def insertionSort(listToSort):
 
 
 def selectionSort(listToSort):
-    '''The selection sort algorithm search the list len(list) times.
-       At each search, it changes the position of the smaller element of the list with the current position of the search. 
-       It has a O(n^2) complexity. '''
+    '''
+        The selection sort algorithm search the list len(list) times.
+        At each search, it changes the position of the smaller element of the list with the current position of the search. 
+    '''
     for i in range(len(listToSort)):
         minPos = i
         for j in range(i, len(listToSort)):
@@ -52,30 +55,25 @@ def countingSort():
 
 def main():
 
-    sort = [5,67,1,1,0,-8,2,4,6,8,9,67,5,544,3,3,6,4,4,6]
+    sort = []
 
-    print(sort)
-    print(insertionSort(sort))
+    for i in range(10000):
+        sort.append(random.randint(0,5))
 
+    sort1=sort[:]
+    sort2=sort[:]
 
-    #inp = input("Insira uma tupla de números: ")
-    #
-    #stringInput=inp.split()
-    #listToSort=[]
+    # sort1=selectionSort(sort1)
 
-    #if all([k.isdigit() for k in stringInput]) is True:
-    #    for d in stringInput:
-    #        listToSort.append(float(d))
-    #        
+    # sort1[300],sort1[500]=sort1[500],sort1[300]
 
-    #    print("{0:^20s}: {1}".format("A entrada foi", listToSort))
-    #    print("{0:^20s}: {1}".format("Função sorted()", sorted(listToSort)))
-    #    print("{0:^20s}: {1}".format("Subrotina sorting()", sorting(listToSort)))
+    start=time.time()
+    insertionSort(sort1)
+    print("InsertionSort runned in ", time.time()-start)
 
-    #else:
-    #    print("Inserir somente números separados por espaços")
-
-
+    start=time.time()
+    selectionSort(sort2)
+    print("SelectionSort runned in ", time.time()-start)
 
 main()
 #os.system("pause")
