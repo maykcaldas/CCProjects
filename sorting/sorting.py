@@ -6,15 +6,20 @@ import os
 
 def insertionSort(listToSort):
     ''' '''
-    for i in range(len(listToSort)):
+    for i in range(1, len(listToSort)):
         currentPos = i
-        for i in range(currentPos, 0, -1):
-            
+        checkPos = i-1
+        while (listToSort[checkPos] > listToSort[checkPos+1]) and (checkPos >= 0):
+            listToSort[checkPos], listToSort[checkPos+1] = listToSort[checkPos+1], listToSort[checkPos]
+            checkPos -= 1
+    return listToSort
 
 
 
 def selectionSort(listToSort):
-    '''The selection sort algorithm search the list len(list) times. At each search, it changes the position of the smaller element of the list with the current position of the search. It has a O(n^2) complexity. '''
+    '''The selection sort algorithm search the list len(list) times.
+       At each search, it changes the position of the smaller element of the list with the current position of the search. 
+       It has a O(n^2) complexity. '''
     for i in range(len(listToSort)):
         minPos = i
         for j in range(i, len(listToSort)):
@@ -32,7 +37,6 @@ def bubbleSort():
     pass
 
 
-
 def quickSort():
     pass
 
@@ -46,27 +50,12 @@ def countingSort():
     pass
 
 
-def sorting(listToSort):
-    sort=[]
-    for i in range(len(listToSort)):
-        min = i
-        j=i
-        while (j<len(listToSort)):
-            if listToSort[j] < listToSort[min]:
-                min = j
-            j+=1
-        sort.append(listToSort[min])
-        listToSort[i], listToSort[min] = listToSort[min], listToSort[i]
-
-        
-    return sort
-
-
 def main():
 
-    sort = [5,67,1,1,2,4,6,8,9,67,5,544,3,3,6,4,4,6]
+    sort = [5,67,1,1,0,-8,2,4,6,8,9,67,5,544,3,3,6,4,4,6]
 
-    print(selectionSort(sort))
+    print(sort)
+    print(insertionSort(sort))
 
 
     #inp = input("Insira uma tupla de números: ")
