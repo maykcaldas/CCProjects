@@ -13,7 +13,7 @@ base=["null",
         "sieben",
         "acht",
         "neun",
-        "zhen"]
+        "zehn"]
 
 key=1
 while (key != "0"):
@@ -44,11 +44,11 @@ while (key != "0"):
             elif number[1]=="2":
                 print(" - zwölf")
             elif number[1]=="6":
-                print(" - sechzhen")
+                print(" - sechzehn")
             elif number[1]=="7":
-                print(" - siebzhen")
+                print(" - siebzehn")
             else:
-                print(" - " + base[int(number[1])]+"zhen")
+                print(" - " + base[int(number[1])]+"zehn")
         elif number[0]=="2":
                 print(" - " + base[+int(number[1])]+"undzwanzig")
         elif number[0]=="6":
