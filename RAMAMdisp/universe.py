@@ -4,6 +4,7 @@
 ''' Documentation '''
 
 class atom:
+    ''' Documentation '''
     def __init__(self, name="atom", x=0.0, y=0.0, z=0.0):
         self.name   = name
         self.x      = x
