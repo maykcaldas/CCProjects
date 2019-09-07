@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+!/usr/bin/python3
 #!-*- coding: utf8 -*-
 
 ''' Documentation '''
@@ -98,7 +98,7 @@ def create_dir(path):
         os.mkdir(path)
     return None
 
-def write_xyz(input_name, molecule, nsteps):
+def write_coord(input_name, molecule, nsteps):
     ''' Documentation '''
     input_name = input_name+"_steps"
     dispCount=0
@@ -174,7 +174,7 @@ def main():
     print("{0} frequencies evaluated.".format(len(molecule[0].get_Dx())))
 
     read_displacements(input_file,molecule)
-    write_xyz(input_file[:-4], molecule,nsteps)
+    write_coord(input_file[:-4], molecule,nsteps)
 
     print("The output coordinate files are at {0} folder\n".format(input_file[:-4]+"_steps"))
 
