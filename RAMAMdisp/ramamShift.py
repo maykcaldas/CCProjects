@@ -1,4 +1,4 @@
-!/usr/bin/python3
+#!/usr/bin/python3
 #!-*- coding: utf8 -*-
 
 ''' Documentation '''
@@ -16,8 +16,10 @@ def print_header():
     print('#    Automated generator to RAMAM maximum displacement   #')
     print('# Usage:                                                 #')
     print('# python3 ramamShift.py <input file> <nsteps>            #')
+    print('#   argparse will possibly be implemented soon           #')
+    print('#          <<<wait for it>>>                             #')
     print('#                                                        #')
-    print('# We are currently only supporting the TurboMole output. #')
+    print('#   We are currently only supporting TurboMole output.   #')
     print('##########################################################')
     print('\n')
 
@@ -68,7 +70,7 @@ def read_displacements(file_name,molecule):
             count=12 #skipping the frequencies documentation
             while (not "time elapsed for vibrational analysis" in inp[lineN+count][:-1]):
                 if "RAMAN" in inp[lineN+count][:-1]:
-                    count+=2 #Jumping the empty line before the RAMAN statment
+                    count+=2 #Jumping the empty line before the RAMAN statement
                     for atom in molecule:
                         line = inp[lineN+count][:-1].split()
                         for disp in range(3,len(line)):
@@ -168,12 +170,11 @@ def main():
     #######################
 
     molecule = read_eq_coord(input_file)
-
-
     print("{0} atoms computed.".format(len(molecule)))
-    print("{0} frequencies evaluated.".format(len(molecule[0].get_Dx())))
-
+    
     read_displacements(input_file,molecule)
+    print("{0} frequencies evaluated.".format(len(molecule[2].get_Dx())))
+
     write_coord(input_file[:-4], molecule,nsteps)
 
     print("The output coordinate files are at {0} folder\n".format(input_file[:-4]+"_steps"))
