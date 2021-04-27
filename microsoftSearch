@@ -1,0 +1,260 @@
+import java.util.Scanner;
+
+class Cell{
+    int deep;
+    char val;
+    int x;
+    int y;
+    Cell[] children = new Cell[8];
+    int nChildren=0;
+
+    public Cell(char val, int x, int y, int deep){
+        this.val = val;
+        this.x = x;
+        this.y = y;
+        this.deep=deep;
+    }
+    public Cell(char val, int x, int y){
+        this.val = val;
+        this.x = x;
+        this.y = y;
+        this.deep=-1;
+    }
+
+    public char getChar(){
+        return this.val;
+    }
+
+    public int getX(){
+        return this.x;
+    }
+    
+    public int getY(){
+        return this.y;
+    }
+
+    public int getDeep(){
+        return this.deep;
+    }
+
+    public void setDeep(int deep){
+        this.deep=deep;
+    }
+    public int getNChildren(){
+        return this.nChildren;
+    }
+
+    public Cell[] getChildren(){
+        return this.children;
+    }
+
+    public void addChild(Cell child){
+        this.children[nChildren] = child;
+        this.nChildren++;
+        child.setDeep(this.getDeep()+1);
+    }
+}
+
+class matrixSeed{
+    // Declaração de variáveis
+    int nChars;
+    char[] table;
+
+    // Construtores
+    public matrixSeed(){
+        String tableString = readTable();
+        char[] table = convertTable(tableString);
+        this.table = table;
+        this.nChars = table.length;
+    }
+
+    // Métodos
+    public char[] getTable(){
+        return this.table;
+    }
+
+    public String readTable(){
+        // boolean stop=false;
+        String tableString="";
+        String newChar="";
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Digite os caracteres um a um e finalize com FIM");
+        do {
+            tableString+=newChar;
+            newChar = scan.next();
+        } while(!newChar.equals("FIM"));
+
+        return tableString;
+    }
+
+    public char[] convertTable(String tableString){
+        char[] table = tableString.toCharArray();
+        for (int c=0; c<table.length; c++){
+            table[c] = Character.toUpperCase(table[c]);
+        }
+
+        return table;
+    }
+}
+
+class Matrix{
+    // Declaração de variáveis
+    // Valores default que eu usei pra testas sem precisar do scanner
+    int nRows=5;
+    int nCols=5;
+    char[][] matrix = {{'A','C','P','R','C'},
+                        {'X','S','O','P','C'},
+                        {'V','O','V','N','I'},
+                        {'W','G','F','M','N'},
+                        {'Q','A','T','I','T'}};
+    public static boolean checkDeep;
+
+    // Construtores
+    public Matrix(){} // Construtor padrão (usa os atributos padrões)
+    public Matrix(char[] table){ // Construtor caso o usuario entre os dados com o scaner
+        this.nRows=(int)Math.ceil(Math.sqrt(table.length));
+        this.nCols=(int)Math.ceil(Math.sqrt(table.length));
+        char[][] newMatrix = new char[nRows][nCols];
+        int c=0;
+        for(int i=0; i<nRows; i++){
+            for(int j=0; j<nCols; j++){
+                if (c<table.length){
+                    newMatrix[i][j] = table[c];
+                } else{
+                    newMatrix[i][j] = '0';
+                }
+                c++;
+            }
+        }
+        this.matrix=newMatrix;
+    }
+    public Matrix(char[][] table){ // Construtor caso o usuário passe uma matriz inteira já montada
+        this.matrix=table;
+        this.nRows=table.length;
+        this.nCols=table[0].length;
+    }
+
+    // Métodos
+    public String toString(){
+        String matrixToString="";
+        for(int i=0; i<this.nRows; i++){
+            String nl = "";
+            for(int j=0; j<this.nCols; j++){
+                nl+=this.matrix[i][j]+"  ";
+            }
+            matrixToString+=nl+"\n";
+        }
+        return matrixToString;
+    }
+
+    void searchSurroundings(Cell root, char whatToSearch, char[][] curMatrix, int fx, int fy){
+        // Procura o caracter desejado nas células ao redor de [i,j]
+        int i=root.getX();
+        int j=root.getY();
+        for(int ni=i-1; ni<=i+1; ni++){
+            for(int nj=j-1; nj<=j+1; nj++){
+                // Evitando buscas fora do grid
+                if((ni > this.nRows-1) || (ni < 0)){continue;}
+                if((nj > this.nCols-1) || (nj < 0)){continue;}
+                if((ni==fx) && (nj==fy)){continue;}
+                if(curMatrix[ni][nj] == whatToSearch){
+                    Cell child = new Cell(curMatrix[ni][nj], ni, nj);
+                    root.addChild(child);
+                    // char c= child.getChar();
+                    // int x = child.getX();
+                    // int y = child.getY();
+                    // System.out.println("-->"+c+" ("+String.valueOf(x)+" "+String.valueOf(y)+")");
+                }
+            }
+        }
+    }
+
+    void growTree(Cell root, String toSearch){
+        Cell currNode = root;
+        if(currNode.getChildren().length != 0){
+            Cell[] children=currNode.getChildren();
+            // System.out.println("Root Char: "+root.getChar()+" ("+String.valueOf(root.getX())+" "+String.valueOf(root.getY())+")");
+            for(int c=0; c<children.length; c++){
+                if(children[c]==null){break;}
+                Cell child = children[c];
+                if(child.getDeep() == toSearch.length()-1){checkDeep=true;}
+                // char k= child.getChar();
+                // int x = child.getX();
+                // int y = child.getY();
+                // System.out.println("->"+k+" ("+String.valueOf(x)+" "+String.valueOf(y)+")");
+                if(children[c].getDeep()+1 == toSearch.length()){break;}
+                this.searchSurroundings(child, toSearch.charAt(children[c].getDeep()+1), this.matrix, root.getX(), root.getY());
+                growTree(children[c], toSearch);
+            }
+        }
+    }
+
+    Cell buildTree(String toSearch){
+        Cell root = new Cell('#', -1, -1, -1);
+        for(int i=0; i<this.nRows; i++){
+            for(int j=0; j<this.nCols; j++){
+                if(this.matrix[i][j] == toSearch.charAt(0)){
+                    Cell child = new Cell(this.matrix[i][j], i, j);
+                    root.addChild(child);
+                }
+            }
+        }
+        growTree(root, toSearch);
+        return(root);
+    }
+
+    boolean examineTree(Cell root, String toSearch){
+        // Função bugada.
+        // Mas ela deveria checar se a profundidade máxima
+        // da árvore é igual a toSearch.length()-1
+        // Ainda vou trabalhar nela.
+        System.out.println(String.valueOf("Root: "+root.getDeep()) +" "+ root.getChar());
+        if (root.getDeep()!=toSearch.length()-1){
+            Cell[] children=root.getChildren();
+            for(int c=0; c<children.length; c++){
+                System.out.println(c);
+                if(children[c]==null){break;}
+                Cell child = children[c];
+                System.out.println(String.valueOf(child.getDeep()) +" "+ child.getChar());
+                return examineTree(child, toSearch);
+            }
+        }else{return true;}
+        return false;
+    }
+
+    public boolean searchString(String toSearch){
+        Cell root=buildTree(toSearch);
+
+        if(checkDeep){
+            return true;
+        } else {
+            return false;
+        }
+
+        // return examineTree(root, toSearch);
+        }
+    }
+
+
+public class newQ1{
+    public static void main(String[] args){
+        String stringToSearch;
+        // matrixSeed seed = new matrixSeed();
+        // Matrix matrix = new Matrix(seed.getTable());
+        Matrix matrix = new Matrix();
+        System.out.println(matrix);
+
+        // Scanner scan = new Scanner(System.in);
+        // System.out.println("Digite a string a ser buscada");
+        // stringToSearch = scan.next();
+        // scan.close();
+        stringToSearch="MICROSOFT";
+
+        if(matrix.searchString(stringToSearch.toUpperCase())){
+            System.out.println("ACHEI!");
+        } else {
+            System.out.println("Num achei :(");
+        }
+
+    }
+}
